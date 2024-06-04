@@ -12,7 +12,7 @@ app.get("/", async (req, res) => {
     const browser = await puppeteer.launch({
       headless: true,
       executablePath: `/usr/bin/google-chrome`, // Use the environment variable if set
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      args: [`--no-sandbox`, `--headless`, `--disable-gpu`, `--disable-dev-shm-usage`],
     });
 
     console.log("Opening new page");
