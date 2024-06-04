@@ -8,7 +8,13 @@ const port = 3000;
 
 app.get('/', async (req, res) => {
   try {
-    const browser = await puppeteer.launch();
+    console.log('Launching browser');
+    const browser = await puppeteer.launch({
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      executablePath: process.env.CHROME_PATH || undefined, // Use the environment variable if set
+    });
+
+    console.log('Opening new page');
     const page = await browser.newPage();
 
     // Set the HTML content you want to convert to PDF
@@ -24,22 +30,21 @@ app.get('/', async (req, res) => {
       </html>
     `;
 
-    // Navigate to the HTML content
+    console.log('Setting HTML content');
     await page.setContent(htmlContent);
 
-    // Generate the PDF
-    const pdfBuffer = await page.pdf({ format: 'A4' });
+    console.log('Generating PDF');
+    const pdfBuffer = await page.pdf({ format: 'A4', timeout: 30000 });
 
-    // Close the browser instance
+    console.log('Closing browser');
     await browser.close();
 
     // Set the header for the PDF download
     res.setHeader('Content-Type', 'application/pdf');
-    // res.setHeader('Content-Disposition', 'attachment; filename=output.pdf');
     res.setHeader('Content-Disposition', 'inline; filename=output.pdf');
 
-
     // Send the PDF buffer as a response
+    console.log('Sending PDF response');
     res.send(pdfBuffer);
   } catch (error) {
     console.error('Error generating PDF:', error);
