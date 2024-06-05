@@ -1,7 +1,5 @@
 const express = require("express");
 const puppeteer = require("puppeteer");
-// const fs = require("fs");
-// const path = require("path");
 
 const app = express();
 const port = 3000;
@@ -13,15 +11,10 @@ app.get("/", async (req, res) => {
       headless: true,
       args: [
         "--no-sandbox",
-        // "--headless",
-        // "--disable-gpu",
-        // "--disable-dev-shm-usage",
         "--single-process",
-        // "--disable-extensions",
         "--no-zygote",
       ],
-      executablePath: process.env.NODE_ENV === "production" ? process_env_PUPPETEER_EXECUTABLE_PATH : puppeteer.executablePath(),
-      
+      executablePath: process.env.NODE_ENV === "production" ? process.env.PUPPETEER_EXECUTABLE_PATH : puppeteer.executablePath(),
     });
 
     console.log("Opening new page");
