@@ -1,7 +1,7 @@
 const express = require("express");
 const puppeteer = require("puppeteer");
-const fs = require("fs");
-const path = require("path");
+// const fs = require("fs");
+// const path = require("path");
 
 const app = express();
 const port = 3000;
@@ -11,8 +11,17 @@ app.get("/", async (req, res) => {
     console.log("Launching browser");
     const browser = await puppeteer.launch({
       headless: true,
-      executablePath: `/usr/bin/google-chrome`, // Use the environment variable if set
-      args: [`--no-sandbox`, `--headless`, `--disable-gpu`, `--disable-dev-shm-usage`],
+      args: [
+        "--no-sandbox",
+        "--headless",
+        // "--disable-gpu",
+        // "--disable-dev-shm-usage",
+        "--single-process",
+        // "--disable-extensions",
+        "--no-zygote",
+      ],
+      executablePath: process.env.NODE_ENV === "production" ? process_env_PUPPETEER_EXECUTABLE_PATH : puppeteer.executablePath(),
+      
     });
 
     console.log("Opening new page");
@@ -35,7 +44,7 @@ app.get("/", async (req, res) => {
     await page.setContent(htmlContent);
 
     console.log("Generating PDF");
-    const pdfBuffer = await page.pdf({ format: "A4", timeout: 30000 });
+    const pdfBuffer = await page.pdf({ format: "A4", timeout: 90000 });
 
     console.log("Closing browser");
     await browser.close();
