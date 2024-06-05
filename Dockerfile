@@ -1,7 +1,7 @@
 FROM ghcr.io/puppeteer/puppeteer:22.10.0
-FROM node:18
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD = true \
-    PUPPETEER_EXECUTABLE_PATH= /usr/bin/google-chrome-stable
+
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
+    PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome-stable
 
 
 # Use the official Node.js image as a base
@@ -59,7 +59,7 @@ RUN npm ci
 COPY . .
 
 # Expose the port the app runs on
-EXPOSE 3000
+# EXPOSE 3000
 
 # Start the application
 CMD [ "node", "index.js" ]
