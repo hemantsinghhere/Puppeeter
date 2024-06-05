@@ -13,7 +13,7 @@ app.get("/", async (req, res) => {
       headless: true,
       args: [
         "--no-sandbox",
-        "--headless",
+        // "--headless",
         // "--disable-gpu",
         // "--disable-dev-shm-usage",
         "--single-process",
