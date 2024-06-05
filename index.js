@@ -11,8 +11,11 @@ app.get("/", async (req, res) => {
       headless: true,
       args: [
         "--no-sandbox",
+        "--disable-setuid-sandbox",
         "--single-process",
         "--no-zygote",
+        "--disable-dev-shm-usage",
+        "--disable-gpu",
       ],
       executablePath: process.env.NODE_ENV === "production" ? process.env.PUPPETEER_EXECUTABLE_PATH : puppeteer.executablePath(),
     });
